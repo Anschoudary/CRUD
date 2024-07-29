@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+</head>
+<body>
+    <h1>Student Management</h1>
+
+    <div>
+        <form method="post" action="{% url 'home' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if edit_id %}
+                <input type="hidden" name="student_id" value="{{ edit_id }}">
+                <button type="submit" name="update">Update</button>
+            {% else %}
+                <button type="submit" name="create">Create</button>
+            {% endif %}
+        </form>
+    </div>
+
+    <h2>Student List</h2>
+    <ul>
+        {% for student in students %}
+        <li>
+            {{ student.name }} - {{ student.score }}
+            <a href="{% url 'edit' student.id %}">Edit</a>
+            <form method="post" action="{% url 'delete' student.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form> 
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
